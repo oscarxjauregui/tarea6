@@ -8,7 +8,7 @@ import 'package:tarea6/model/renta_model.dart';
 
 class RentaDatabase {
   static final NAMEDB = 'RENTADB';
-  static final VERSIONDB = 1;
+  static final VERSIONDB = 4;
 
   static Database? _database;
   Future<Database> get database async {
@@ -30,7 +30,11 @@ class RentaDatabase {
           fecha VARCHAR(100),
           fechaRecordatorio VARCHAR(100),
           estatus VARCHAR(20),
-          precio REAL
+          sillas VARCHAR(3),
+          mesas VARCHAR(3),
+          inflable VARCHAR(3),
+          toldo VARCHAR(3),
+          sonido VARCHAR(3)
           )''';
         db.execute(query);
       },

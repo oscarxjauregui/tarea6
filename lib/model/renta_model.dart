@@ -1,11 +1,15 @@
 class RentaModel {
   int? idRenta;
-  String responsable;
-  String lugar;
-  String fecha;
-  String fecharecordatorio;
-  String estatus;
-  double precio;
+  String? responsable;
+  String? lugar;
+  String? fecha;
+  String? fecharecordatorio;
+  String? estatus;
+  String? sillas;
+  String? mesas;
+  String? inflable;
+  String? toldo;
+  String? sonido;
 
   RentaModel({
     this.idRenta,
@@ -14,7 +18,11 @@ class RentaModel {
     required this.fecha,
     required this.fecharecordatorio,
     required this.estatus,
-    required this.precio,
+    required this.sillas,
+    required this.mesas,
+    required this.inflable,
+    required this.toldo,
+    required this.sonido,
   });
 
   factory RentaModel.fromMap(Map<String, dynamic> map) {
@@ -25,7 +33,11 @@ class RentaModel {
       fecha: map['fecha'],
       fecharecordatorio: map['fecharecordatorio'],
       estatus: map['estatus'],
-      precio: map['precio'],
+      sillas: map['sillas'],
+      mesas: map['mesas'],
+      inflable: map['inflable'],
+      toldo: map['toldo'],
+      sonido: map['sonido'],
     );
   }
 
@@ -37,7 +49,11 @@ class RentaModel {
       'fecha': fecha,
       'fecharecordatorio': fecharecordatorio,
       'estatus': estatus,
-      'precio': precio,
+      'sillas': sillas,
+      'mesas': mesas,
+      'inflable': inflable,
+      'toldo': toldo,
+      'sonido': sonido,
     };
   }
 }
