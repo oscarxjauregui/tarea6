@@ -11,8 +11,22 @@ class AgregarRentaScreen extends StatefulWidget {
 }
 
 class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
-
   RentaDatabase? rentaDB;
+  
+  String? _selectedEstatus;
+  final List<String> _estatusOptions = [
+    'Finalizado',
+    'Pendiente',
+    'Cancelado',
+  ];
+
+  final TextEditingController _responsableController = TextEditingController();
+  final TextEditingController _lugarController = TextEditingController();
+  final TextEditingController _fechaController = TextEditingController();
+  final TextEditingController _fechaRecordatorioController =
+      TextEditingController();
+  final TextEditingController _estatusController = TextEditingController();
+  final TextEditingController _precioController = TextEditingController();
 
   @override
   void initState() {
@@ -22,24 +36,74 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Renta'),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: AppValueNotifier.banRentas,
-        builder: (context, value, _) {
-          return FutureBuilder(
-            future: rentaDB!.CONSULTAR(),
-            builder: (context, AsyncSnapshot<List<RentaModel>>snapshot), {
-              if(snapshot.hasError) {
-                return Center(child: Text('Algo salio mal'),);
-              }
-            }
-          );
-        }
-      )
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _responsableController,
+              decoration: InputDecoration(labelText: 'Responsable'),
+            ),
+            TextField(
+              controller: _lugarController,
+              decoration: InputDecoration(labelText: 'Lugar'),
+            ),
+            TextField(
+              controller: _fechaController,
+              decoration: InputDecoration(labelText: 'Fecha'),
+            ),
+            DropdownButtonFormField<String>(
+              value: _selectedEstatus,
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedEstatus = newValue;
+                });
+              },
+              items: _estatusOptions.map((estatus) {
+                return DropdownMenuItem<String>(
+                  value: estatus,
+                  child: Text(estatus),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Estatus',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: _precioController,
+              decoration: InputDecoration(labelText: 'Total'),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                _agregarRenta();
+              },
+              child: Text('Agregar'),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  void _agregarRenta() async {
+    final nuevaRenta = RentaModel(
+      responsable: _responsableController.text,
+      lugar: _lugarController.text,
+      fecha: _fechaController.text,
+      fecharecordatorio: _fechaController.text,
+      estatus: _estatusController.text,
+      precio: double.parse(_precioController.text),
+    );
+
+    await rentaDB!.INSERTAR(nuevaRenta.toMap());
+    Navigator.pop(context, true); // Regresar a la pantalla anterior
   }
 }
