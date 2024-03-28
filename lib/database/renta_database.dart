@@ -67,7 +67,7 @@ class RentaDatabase {
 
   Future<List<RentaModel>> CONSULTAR() async {
     var conexion = await database;
-    var rentas = await conexion.query('tblProductos');
+    var rentas = await conexion.query('tblRenta');
     return rentas.map((renta) => RentaModel.fromMap(renta)).toList();
   }
 }

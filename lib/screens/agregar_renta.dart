@@ -130,28 +130,30 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
                   height: 16,
                 ),
                 DropdownButtonFormField<String>(
-                    value: _selectedEstatus,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedEstatus = newValue;
-                      });
-                    },
-                    items: _estatusOptions.map((estatus) {
-                      return DropdownMenuItem<String>(
-                        value: estatus,
-                        child: Text(estatus),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      labelText: 'Estatus',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Ingresa el El estatus';
-                      }
-                      return null;
-                    }),
+                  value: _selectedEstatus,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedEstatus = newValue;
+                      _estatusController.text = newValue ?? '';
+                    });
+                  },
+                  items: _estatusOptions.map((estatus) {
+                    return DropdownMenuItem<String>(
+                      value: estatus,
+                      child: Text(estatus),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    labelText: 'Estatus',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Ingresa el El estatus';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(
                   height: 16,
                 ),
@@ -245,8 +247,7 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          int toldo =
-                              int.tryParse(_toldoController.text) ?? 0;
+                          int toldo = int.tryParse(_toldoController.text) ?? 0;
                           if (toldo < 20) {
                             toldo++;
                             _toldoController.text = toldo.toString();
