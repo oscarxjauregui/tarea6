@@ -6,15 +6,22 @@ import 'package:tarea6/model/renta_model.dart';
 import 'package:tarea6/screens/actualizar_renta.dart';
 import 'package:tarea6/settings/app_value_notifier.dart';
 
-class HistorialScreen extends StatefulWidget {
-  const HistorialScreen({super.key});
+class PendienteScreen extends StatefulWidget {
+  const PendienteScreen({super.key});
 
   @override
-  State<HistorialScreen> createState() => _HistorialScreenState();
+  State<PendienteScreen> createState() => _PendienteScreenState();
 }
 
-class _HistorialScreenState extends State<HistorialScreen> {
+class _PendienteScreenState extends State<PendienteScreen> {
   RentaDatabase? rentaDB;
+
+  String? _selectedEstatus;
+  final List<String> _estatusOptions = [
+    'Finalizado',
+    'Pendiente',
+    'Cancelado',
+  ];
 
   @override
   void initState() {
@@ -26,7 +33,21 @@ class _HistorialScreenState extends State<HistorialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historial'),
+        title: Text('Rentas Pendientes'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/add');
+            },
+            icon: Icon(Icons.add),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/historial');
+            },
+            icon: Icon(Icons.history),
+          ),
+        ],
       ),
       body: ValueListenableBuilder(
           valueListenable: AppValueNotifier.banRentas,
@@ -43,9 +64,15 @@ class _HistorialScreenState extends State<HistorialScreen> {
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: ListView.builder(
-                        itemCount: snapshot.data!.length,
+                        itemCount: snapshot.data!
+                            .where((renta) => renta.estatus == 'Pendiente')
+                            .length,
                         itemBuilder: (context, index) {
-                          return itemRenta(snapshot.data![index]);
+                          RentaModel renta = snapshot.data!
+                              .where((renta) => renta.estatus == 'Pendiente')
+                              .elementAt(index);
+                          //return itemRenta(snapshot.data![index]);
+                          return itemRenta(renta);
                         },
                       ),
                     );
@@ -96,10 +123,11 @@ class _HistorialScreenState extends State<HistorialScreen> {
                   IconButton(
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AcualizarRentaScreen(renta: renta)));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AcualizarRentaScreen(renta: renta)
+                        )
+                      );
                       //showModal(context, renta);
                     },
                     icon: Icon(Icons.edit),

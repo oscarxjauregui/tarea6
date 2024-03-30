@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tarea6/screens/agregar_renta.dart';
 import 'package:tarea6/screens/historial_screen.dart';
 import 'package:tarea6/screens/home_screen.dart';
+import 'package:tarea6/screens/pendiente_screen.dart';
 import 'package:tarea6/settings/app_value_notifier.dart';
 import 'package:tarea6/settings/theme.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
             routes: {
               "/add": (BuildContext context) => const AgregarRentaScreen(),
               "/historial": (BuildContext context) => const HistorialScreen(),
+              "/pendiente": (BuildContext context) => const PendienteScreen(),
             },
           );
         });

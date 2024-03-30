@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tarea6/database/renta_database.dart';
 import 'package:tarea6/model/renta_model.dart';
-import 'package:tarea6/model/silla_model.dart';
-import 'package:tarea6/settings/app_value_notifier.dart';
 import 'package:badges/badges.dart' as badges;
 
-class AgregarRentaScreen extends StatefulWidget {
-  const AgregarRentaScreen({super.key});
+class AcualizarRentaScreen extends StatefulWidget {
+  final RentaModel renta;
+  const AcualizarRentaScreen({Key? key, required this.renta}) : super(key: key);
 
   @override
-  State<AgregarRentaScreen> createState() => _AgregarRentaScreenState();
+  State<AcualizarRentaScreen> createState() => _AcualizarRentaScreenState();
 }
 
-class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
+class _AcualizarRentaScreenState extends State<AcualizarRentaScreen> {
   RentaDatabase? rentaDB;
   final _formKey = GlobalKey<FormState>();
 
@@ -41,20 +39,35 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
       TextEditingController(text: '0');
   final TextEditingController _sonidoController =
       TextEditingController(text: '0');
-  final TextEditingController _totalController = TextEditingController(text: '0');
+  final TextEditingController _totalController =
+      TextEditingController(text: '0');
 
   @override
   void initState() {
     super.initState();
     rentaDB = new RentaDatabase();
+    _setInitialValues();
     _updateTotal();
+  }
+
+  void _setInitialValues() {
+    _responsableController.text = widget.renta.responsable ?? '';
+    _lugarController.text = widget.renta.lugar ?? '';
+    _fechaController.text = widget.renta.fecha ?? '';
+    _fechaRecordatorioController.text = widget.renta.fecharecordatorio ?? '';
+    _estatusController.text = widget.renta.estatus ?? '';
+    _sillasController.text = widget.renta.sillas ?? '';
+    _mesasController.text = widget.renta.mesas ?? '';
+    _inflableController.text = widget.renta.inflable ?? '';
+    _toldoController.text = widget.renta.toldo ?? '';
+    _sonidoController.text = widget.renta.sonido ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar Renta'),
+        title: Text('Actualizar Renta'),
         actions: [
           badges.Badge(
             badgeContent: Text(
@@ -63,7 +76,7 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
             ),
             child: Icon(Icons.table_rows),
             badgeAnimation: badges.BadgeAnimation.scale(),
-            //position: badges.BadgePosition.topStart(),            
+            //position: badges.BadgePosition.topStart(),
           ),
           Text('    ')
         ],
@@ -216,18 +229,18 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
                       icon: Icon(Icons.add),
                     ),
                     IconButton(
-                      onPressed: () {
-                        setState(() {
-                          int mesas = int.tryParse(_mesasController.text) ?? 0;
-                          if (mesas > 0) {
-                            mesas--;
-                            _mesasController.text = mesas.toString();
-                            _updateTotal();
-                          }
-                        });
-                      },
-                      icon: Icon(Icons.remove),
-                    ),
+                        onPressed: () {
+                          setState(() {
+                            int mesas =
+                                int.tryParse(_mesasController.text) ?? 0;
+                            if (mesas > 0) {
+                              mesas--;
+                              _mesasController.text = mesas.toString();
+                              _updateTotal();
+                            }
+                          });
+                        },
+                        icon: Icon(Icons.remove)),
                     Text('${_mesasController.text} Mesas'),
                   ],
                 ),
@@ -332,17 +345,18 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      _agregarRenta();
+                      //_agregarRenta();
+                      _actualizarRenta();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                              'Renta de ${_responsableController.text} agregada'),
+                              'Renta de ${_responsableController.text} actualizada'),
                           duration: Duration(seconds: 2),
                         ),
                       );
                     }
                   },
-                  child: Text('Agregar'),
+                  child: Text('Actualizar'),
                 ),
               ],
             ),
@@ -352,7 +366,7 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
     );
   }
 
-  void _updateTotal(){
+  void _updateTotal() {
     int total = 0;
     total += int.tryParse(_sillasController.text) ?? 0;
     total += int.tryParse(_mesasController.text) ?? 0;
@@ -362,20 +376,21 @@ class _AgregarRentaScreenState extends State<AgregarRentaScreen> {
     _totalController.text = total.toString();
   }
 
-  void _agregarRenta() async {
-    final nuevaRenta = RentaModel(
-        responsable: _responsableController.text,
-        lugar: _lugarController.text,
-        fecha: _fechaController.text,
-        fecharecordatorio: _fechaRecordatorioController.text,
-        estatus: _estatusController.text,
-        sillas: _sillasController.text,
-        mesas: _mesasController.text,
-        inflable: _inflableController.text,
-        toldo: _toldoController.text,
-        sonido: _sonidoController.text);
-    await rentaDB!.INSERTAR(nuevaRenta.toMap());
+  void _actualizarRenta() async {
+    final rentaActualizada = RentaModel(
+      idRenta: widget.renta.idRenta,
+      responsable: _responsableController.text,
+      lugar: _lugarController.text,
+      fecha: _fechaController.text,
+      fecharecordatorio: _fechaRecordatorioController.text,
+      estatus: _estatusController.text,
+      sillas: _sillasController.text,
+      mesas: _mesasController.text,
+      inflable: _inflableController.text,
+      toldo: _toldoController.text,
+      sonido: _sonidoController.text,
+    );
+    await rentaDB!.ACTUALIZAR(rentaActualizada.toMap());
     Navigator.pushNamed(context, '/pendiente');
-    //Navigator.pop(context, true); // Regresar a la pantalla anterior
   }
 }

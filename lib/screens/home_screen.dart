@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Pendientes'),
               subtitle: Text('Rentas pendientes'),
               trailing: Icon(Icons.chevron_right),
-               onTap: () => Navigator.pushNamed(context, '/add'),
+               onTap: () => Navigator.pushNamed(context, '/pendiente'),
             ),
             ListTile(
               leading: Icon(Icons.list),
