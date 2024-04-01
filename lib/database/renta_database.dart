@@ -70,4 +70,11 @@ class RentaDatabase {
     var rentas = await conexion.query('tblRenta');
     return rentas.map((renta) => RentaModel.fromMap(renta)).toList();
   }
+
+  Future<List<RentaModel>> getRentasExpiracion(String formattedDate) async {
+    var conexion = await database;
+    var rentas = await conexion.query('tblRenta',
+        where: 'DATE(fecha) = ?', whereArgs: [formattedDate]);
+    return rentas.map((renta) => RentaModel.fromMap(renta)).toList();
+  }
 }

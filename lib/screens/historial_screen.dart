@@ -27,6 +27,26 @@ class _HistorialScreenState extends State<HistorialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Historial'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/calendar');
+            },
+            icon: Icon(Icons.calendar_month),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/add');
+            },
+            icon: Icon(Icons.add),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/pendiente');
+            },
+            icon: Icon(Icons.list),
+          ),
+        ],
       ),
       body: ValueListenableBuilder(
           valueListenable: AppValueNotifier.banRentas,

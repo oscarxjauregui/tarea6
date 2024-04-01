@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tarea6/screens/agregar_renta.dart';
+import 'package:tarea6/screens/calendar_screen.dart';
 import 'package:tarea6/screens/historial_screen.dart';
 import 'package:tarea6/screens/home_screen.dart';
 import 'package:tarea6/screens/pendiente_screen.dart';
@@ -30,9 +31,9 @@ class MyApp extends StatelessWidget {
               "/add": (BuildContext context) => const AgregarRentaScreen(),
               "/historial": (BuildContext context) => const HistorialScreen(),
               "/pendiente": (BuildContext context) => const PendienteScreen(),
+              "/calendar": (BuildContext context) => const CalendarScreen(),
             },
           );
         });
   }
-
 }

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tarea6/database/renta_database.dart';
 import 'package:tarea6/model/renta_model.dart';
 import 'package:tarea6/screens/actualizar_renta.dart';
+import 'package:tarea6/screens/calendar_screen.dart';
 import 'package:tarea6/settings/app_value_notifier.dart';
 
 class PendienteScreen extends StatefulWidget {
@@ -16,13 +17,6 @@ class PendienteScreen extends StatefulWidget {
 class _PendienteScreenState extends State<PendienteScreen> {
   RentaDatabase? rentaDB;
 
-  String? _selectedEstatus;
-  final List<String> _estatusOptions = [
-    'Finalizado',
-    'Pendiente',
-    'Cancelado',
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -33,8 +27,18 @@ class _PendienteScreenState extends State<PendienteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rentas Pendientes'),
+        title: Text('Pendientes'),
         actions: [
+          IconButton(
+            onPressed: () {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => TableEventsExample()));
+              Navigator.pushNamed(context, '/calendar');
+            },
+            icon: Icon(Icons.calendar_month),
+          ),
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, '/add');
@@ -123,11 +127,10 @@ class _PendienteScreenState extends State<PendienteScreen> {
                   IconButton(
                     onPressed: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AcualizarRentaScreen(renta: renta)
-                        )
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AcualizarRentaScreen(renta: renta)));
                       //showModal(context, renta);
                     },
                     icon: Icon(Icons.edit),
